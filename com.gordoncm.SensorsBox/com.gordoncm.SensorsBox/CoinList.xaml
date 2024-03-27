@@ -1,16 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="com.gordoncm.SensorsBox.CoinList">
+             x:Class="com.gordoncm.SensorsBox.CoinList"
+             Title="Coins"
+              xmlns:viewmodels1="clr-namespace:com.gordoncm.SensorsBox.ViewModels" 
+              xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox" 
+              x:DataType="sensorsbox:AppShell">
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" />
         <ToolbarItem Text="Search"  />
-        <ToolbarItem Text="Load Next 10"/>
     </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="aawefawefawef" />
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.Footer>
+            <Button Text="Load More" BackgroundColor="DarkGray"/>
+        </ListView.Footer>
+    </ListView>
 </ContentPage>
