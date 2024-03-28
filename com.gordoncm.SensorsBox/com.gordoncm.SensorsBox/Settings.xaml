@@ -6,9 +6,11 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Enter wallet address" />
+            <Editor />
+            <Label Text="Enter username" />
+            <Editor />
+            <Button Text="Save" BackgroundColor="DarkGray"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

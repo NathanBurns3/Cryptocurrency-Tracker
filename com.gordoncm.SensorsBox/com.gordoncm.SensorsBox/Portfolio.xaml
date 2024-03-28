@@ -2,12 +2,17 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="com.gordoncm.SensorsBox.Portfolio"
+           xmlns:viewmodels1="clr-namespace:com.gordoncm.SensorsBox.ViewModels" 
+              xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox" 
              Title="Portfolio">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <ListView x:DataType="viewmodels1:PortfolioViewModel">
+        <ListView.Header>
+            <Label Text="Cameron's Portfolio: $69000"/>
+        </ListView.Header>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="fawefawef" />
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentPage>

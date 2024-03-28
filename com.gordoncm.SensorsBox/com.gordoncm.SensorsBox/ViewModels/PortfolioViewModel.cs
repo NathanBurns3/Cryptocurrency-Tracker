@@ -7,7 +7,11 @@ using System.Text;
 namespace com.gordoncm.SensorsBox.ViewModels
 {
     public class PortfolioViewModel : INotifyPropertyChanged
-    {
+    { 
+        public PortfolioViewModel()
+        { 
+        }
+
         protected bool SetProperty<T>(ref T backingStore, T value,
 [CallerMemberName] string propertyName = "",
 Action onChanged = null)

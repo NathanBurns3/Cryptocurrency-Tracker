@@ -27,7 +27,8 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Coins" Icon="icon_about.png" Route="CoinsPage" ContentTemplate="{DataTemplate local:CoinList}" />
+        <ShellContent Title="Coins" Icon="icon_about.png" Route="CoinsPage" ContentTemplate="{DataTemplate local:CoinList}"/>
+        <ShellContent Title="My Favorites" Icon="icon_about.png" Route="MyFavs" ContentTemplate="{DataTemplate local:MyFavs}" />
         <ShellContent Title="Portfolio" Icon="icon_about.png" Route="PortfolioPage" ContentTemplate="{DataTemplate local:Portfolio}" />
         <ShellContent Title="Settings" Icon="icon_about.png" Route="SettingsPage" ContentTemplate="{DataTemplate local:Settings}" />
     </TabBar>

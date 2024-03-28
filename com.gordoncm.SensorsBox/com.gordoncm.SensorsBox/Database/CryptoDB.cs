@@ -1,10 +1,7 @@
 ﻿using com.gordoncm.SensorsBox.Models;
-using SQLite;
-using System;
-using System.Collections.Generic;
+using SQLite; 
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using System.Linq; 
 
 namespace com.gordoncm.SensorsBox.Database
 {
@@ -32,7 +29,7 @@ namespace com.gordoncm.SensorsBox.Database
 
         public ObservableCollection<Coin> GetCoins(int maxId, int pageId)
         {
-            string getCoinsQuery = "SELECT * FROM Coins WHERE CoinId <= " + maxId + " & CoinId >=" +pageId; 
+            string getCoinsQuery = "SELECT * FROM Coins WHERE CoinId <= " + maxId + " AND CoinId >=" +pageId; 
             
             var coins = _connection.CreateCommand(getCoinsQuery);
             var list = coins.ExecuteQuery<Coin>().ToList();
