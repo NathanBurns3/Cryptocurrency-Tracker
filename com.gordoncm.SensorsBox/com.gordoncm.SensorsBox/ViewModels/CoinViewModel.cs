@@ -13,6 +13,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
         public ObservableCollection<string> Items { get; set; }
         public CoinViewModel() 
         { 
+            Items = new ObservableCollection<string>();
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
