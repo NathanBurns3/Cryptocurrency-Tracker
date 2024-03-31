@@ -6,7 +6,7 @@ using System.Text;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
-    public class SettingsViewModel : BaseViewModel
+    public  class SearchViewModel : BaseViewModel
     {
     }
 }

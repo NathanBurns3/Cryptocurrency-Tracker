@@ -15,7 +15,35 @@ namespace com.gordoncm.SensorsBox.Database
 
             _connection.CreateTable<Coin>();
             _connection.CreateTable<User>();
+            _connection.CreateTable<Favorite>();
         } 
+
+        public User getUser()
+        {
+            string userQuery = "SELECT * FROM Users";
+
+            var cmd = _connection.CreateCommand(userQuery);
+            User user = cmd.ExecuteQuery<User>().First();
+
+            return user; 
+        }
+
+        public ObservableCollection<Favorite> GetFavorites()
+        {
+            string getFavs = "SELECT * FROM Favorites";
+
+            var cmd = _connection.CreateCommand(getFavs);
+            var list = cmd.ExecuteQuery<Favorite>().ToList(); 
+
+            var obs = new ObservableCollection<Favorite>();
+
+            foreach (var item in list)
+            {
+                obs.Add(item);
+            }
+
+            return obs; 
+        }
 
         public Coin GetCoin(int coinId)
         {
@@ -43,9 +71,17 @@ namespace com.gordoncm.SensorsBox.Database
             return obs; 
         }
 
+        public void DeleteFavorite(int id)
+        {
+            string deleteQuery = "DELETE FROM Favorites WHERE Id = " + id; 
+            var deleteCmd = _connection.CreateCommand(deleteQuery);
+
+            deleteCmd.ExecuteNonQuery(); 
+        }
+
         public void DeleteCoins()
         {
-            string deleteQuery = "DELETE FROM coins";
+            string deleteQuery = "DELETE FROM Coins";
             var deleteCmd = _connection.CreateCommand(deleteQuery);
 
             deleteCmd.ExecuteNonQuery(); 
@@ -53,7 +89,7 @@ namespace com.gordoncm.SensorsBox.Database
 
         public void UpdateUserAddress(int UserId, string Address)
         {
-            string updateAddress = "UPDATE Users SET WalletAddress = " + '"'+Address+'"';
+            string updateAddress = "UPDATE Users SET WalletAddress = " + '"' + Address + '"' + " WHERE UserId = " + UserId; 
 
             var updateCmd = _connection.CreateCommand(updateAddress); 
             updateCmd.ExecuteNonQuery();

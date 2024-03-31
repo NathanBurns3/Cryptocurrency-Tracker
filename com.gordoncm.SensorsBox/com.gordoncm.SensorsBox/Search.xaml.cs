@@ -11,14 +11,14 @@ using Xamarin.Forms.Xaml;
 namespace com.gordoncm.SensorsBox
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MyFavs : ContentPage
+    public partial class Search : ContentPage
     {
-        MyFavsViewModel vm; 
+        private SearchViewModel vm; 
 
-        public MyFavs()
+        public Search()
         {
             InitializeComponent();
-            BindingContext = vm = new MyFavsViewModel();
+            BindingContext = vm = new SearchViewModel();
         }
     }
 }
