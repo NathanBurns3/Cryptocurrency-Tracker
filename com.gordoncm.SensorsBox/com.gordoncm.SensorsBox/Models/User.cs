@@ -12,6 +12,6 @@ namespace com.gordoncm.SensorsBox.Models
 
         public string Name { get; set; }
 
-        public string WalletAdress { get; set; }
+        public string WalletAddress { get; set; }
     }
 }
