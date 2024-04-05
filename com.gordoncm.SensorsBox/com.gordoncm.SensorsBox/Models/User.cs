@@ -10,8 +10,18 @@ namespace com.gordoncm.SensorsBox.Models
     {
         public int UserId { get; set; }
 
-        public string Name { get; set; }
+        public string UserName { get; set; }
+
+        public string PreferedName { get; set; }
 
         public string WalletAddress { get; set; }
+
+        public string PrimaryColor { get; set; } = "Blue";
+
+        public string SecondaryColor { get; set; } = "Orange";
+
+        public string FontSize { get; set; } = "Medium";
+
+        public string Currency { get; set; } = "USD";
     }
 }

@@ -1,16 +1,43 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="com.gordoncm.SensorsBox.Settings"
-             Title="Settings">
+             Title="Settings"
+             xmlns:viewModels="clr-namespace:com.gordoncm.SensorsBox.ViewModels">
+
+    <ContentPage.BindingContext>
+        <viewModels:SettingsViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="25">
             <Label Text="Enter wallet address" />
-            <Editor />
-            <Label Text="Enter username" />
-            <Editor />
-            <Button Text="Save" BackgroundColor="DarkGray"/>
+            <Entry x:Name="WalletAddress" Placeholder="Wallet Address" />
+
+            <Label Text="Enter username" Margin="20 0 0 0" />
+            <Entry x:Name="Username" Placeholder="Username" />
+
+            <Label Text="Preferred Name" Margin="20 0 0 0" />
+            <Entry x:Name="PreferredName" Placeholder="Preferred Name" />
+
+            <Label Text="Color Theme" Margin="20 0 0 0" />
+                <Picker x:Name="PrimaryColorPicker" Title="Primary Color"
+                        ItemsSource="{Binding AvailableColors}"
+                        SelectedItem="{Binding SelectedPrimaryColor}" />
+                <Picker x:Name="SecondaryColorPicker" Title="Secondary Color"
+                        ItemsSource="{Binding AvailableColors}"
+                        SelectedItem="{Binding SelectedSecondaryColor}" />
+
+            <Label Text="Font Size" Margin="20 0 0 0" />
+            <Picker x:Name="FontSizePicker" Title="Font Size"
+                        ItemsSource="{Binding AvailableFontSizes}"
+                        SelectedItem="{Binding SelectedFontSize}" />
+
+            <Label Text="Currency" Margin="20 0 0 0" />
+            <Picker x:Name="CurrencyPicker" Title="Currency"
+                        ItemsSource="{Binding AvailableCurrency}"
+                        SelectedItem="{Binding SelectedCurrency}" />
+
+            <Button Text="Save" BackgroundColor="DarkGray" Margin="20 0 0 0" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
