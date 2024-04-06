@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v13.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -98,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\com.gordoncm.SensorsBox\com.gordoncm.SensorsBox.csproj">
-      <Project>{189C8D7E-5F8A-4E56-80E1-63ABA2B2FD4F}</Project>
+      <Project>{2D824DED-CEE7-43D2-B4DA-920688CEBB92}</Project>
       <Name>com.gordoncm.SensorsBox</Name>
     </ProjectReference>
   </ItemGroup>

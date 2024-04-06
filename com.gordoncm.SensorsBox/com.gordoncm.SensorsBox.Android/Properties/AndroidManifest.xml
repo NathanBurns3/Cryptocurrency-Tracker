@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.com.gordoncm.sensorsbox">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
-    <application android:label="com.gordoncm.SensorsBox.Android" android:theme="@style/MainTheme"></application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
+	<application android:label="com.gordoncm.SensorsBox.Android" android:theme="@style/MainTheme"></application>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<queries>
 		<intent>
 			<action android:name="android.intent.action.SENDTO" />
@@ -10,15 +10,15 @@
 		</intent>
 		<intent>
 			<action android:name="android.intent.action.VIEW" />
-			<data android:scheme="http"/>
+			<data android:scheme="http" />
 		</intent>
 		<intent>
 			<action android:name="android.intent.action.VIEW" />
-			<data android:scheme="https"/>
+			<data android:scheme="https" />
 		</intent>
 		<intent>
 			<action android:name="android.intent.action.VIEW" />
-			<data android:scheme="smsto"/>
+			<data android:scheme="smsto" />
 		</intent>
-	</queries>	
+	</queries>
 </manifest>

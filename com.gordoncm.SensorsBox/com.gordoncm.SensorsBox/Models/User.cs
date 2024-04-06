@@ -16,12 +16,12 @@ namespace com.gordoncm.SensorsBox.Models
 
         public string WalletAddress { get; set; }
 
-        public string PrimaryColor { get; set; } = "Blue";
+        public string PrimaryColor { get; set; }
 
-        public string SecondaryColor { get; set; } = "Orange";
+        public string SecondaryColor { get; set; }
 
-        public string FontSize { get; set; } = "Medium";
+        public string FontSize { get; set; }
 
-        public string Currency { get; set; } = "USD";
+        public string Currency { get; set; }
     }
 }

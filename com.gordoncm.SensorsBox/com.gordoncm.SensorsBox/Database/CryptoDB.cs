@@ -1,98 +1,90 @@
 ﻿using com.gordoncm.SensorsBox.Models;
-using SQLite; 
+using SQLite;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq; 
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace com.gordoncm.SensorsBox.Database
 {
     public  class CryptoDB
     {
-        private readonly SQLiteConnection _connection;
 
-        public CryptoDB(string dbPath)
+        static SQLiteAsyncConnection Database;
+
+        public static readonly AsyncLazy<CryptoDB> Instance = new AsyncLazy<CryptoDB>(async () =>
         {
-            _connection = new SQLiteConnection(dbPath);
+            var instance = new CryptoDB();
 
-            _connection.CreateTable<Coin>();
-            _connection.CreateTable<User>();
-            _connection.CreateTable<Favorite>();
-        } 
+            CreateTableResult coinResult = await Database.CreateTableAsync<Coin>();
+            CreateTableResult userResult = await Database.CreateTableAsync<User>();
+            CreateTableResult favoriteResult = await Database.CreateTableAsync<Favorite>();
 
-        public User getUser()
+            return instance;
+        });
+
+        public CryptoDB()
         {
-            string userQuery = "SELECT * FROM Users";
-
-            var cmd = _connection.CreateCommand(userQuery);
-            User user = cmd.ExecuteQuery<User>().First();
-
-            return user; 
+            Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+            CreateDefaultUserIfNoneExists().Wait();
         }
 
-        public ObservableCollection<Favorite> GetFavorites()
+        private async Task CreateDefaultUserIfNoneExists()
         {
-            string getFavs = "SELECT * FROM Favorites";
+            var userCount = await Database.Table<User>().CountAsync();
 
-            var cmd = _connection.CreateCommand(getFavs);
-            var list = cmd.ExecuteQuery<Favorite>().ToList(); 
-
-            var obs = new ObservableCollection<Favorite>();
-
-            foreach (var item in list)
+            if (userCount == 0)
             {
-                obs.Add(item);
+                var defaultUser = new User
+                {
+                    UserId = 1,
+                    UserName = "DefaultUser",
+                    PreferedName = "Default User",
+                    WalletAddress = "0x",
+                    PrimaryColor = "Blue",
+                    SecondaryColor = "Orange",
+                    FontSize = "Medium",
+                    Currency = "USD",
+                };
+
+                await Database.InsertAsync(defaultUser);
             }
-
-            return obs; 
         }
 
-        public Coin GetCoin(int coinId)
+        public Task<User> GetUserAsync()
         {
-            string singleCoin = "SELECT * FROM Coins WHERE CoinId = " + coinId;
-
-            var cmd = _connection.CreateCommand(singleCoin);
-            var coin = cmd.ExecuteQuery<Coin>().First();
-
-            return coin; 
+            return Database.Table<User>().FirstOrDefaultAsync();
         }
 
-        public ObservableCollection<Coin> GetCoins(int maxId, int pageId)
+        public Task<List<Favorite>> GetFavorites()
         {
-            string getCoinsQuery = "SELECT * FROM Coins WHERE CoinId <= " + maxId + " AND CoinId >=" +pageId; 
-            
-            var coins = _connection.CreateCommand(getCoinsQuery);
-            var list = coins.ExecuteQuery<Coin>().ToList();
-            var obs = new ObservableCollection<Coin>();
+            return Database.Table<Favorite>().ToListAsync();
+        }
 
-            foreach (var coin in list)
+        public Task<Coin> GetCoin(int coinId)
+        {
+            return Database.Table<Coin>().Where(i => i.CoinId == coinId).FirstOrDefaultAsync();
+        }
+
+        public Task<List<Coin>> GetCoins(int maxId, int pageId)
+        {
+            return Database.Table<Coin>().Where(i => i.CoinId <= maxId && i.CoinId >= pageId).ToListAsync();
+        }
+
+        public Task<int> DeleteFavorite(Favorite favorite)
+        {
+            return Database.DeleteAsync(favorite);
+        }
+
+        public async Task<int> DeleteCoins()
+        {
+            var coins = await Database.Table<Coin>().ToListAsync();
+            int deleteCount = 0;
+            foreach (var coin in coins)
             {
-                obs.Add(coin);
+                deleteCount += await Database.DeleteAsync(coin);
             }
-            
-            return obs; 
-        }
-
-        public void DeleteFavorite(int id)
-        {
-            string deleteQuery = "DELETE FROM Favorites WHERE Id = " + id; 
-            var deleteCmd = _connection.CreateCommand(deleteQuery);
-
-            deleteCmd.ExecuteNonQuery(); 
-        }
-
-        public void DeleteCoins()
-        {
-            string deleteQuery = "DELETE FROM Coins";
-            var deleteCmd = _connection.CreateCommand(deleteQuery);
-
-            deleteCmd.ExecuteNonQuery(); 
-        }
-
-        public void UpdateUserAddress(int UserId, string Address)
-        {
-            string updateAddress = "UPDATE Users SET WalletAddress = " + '"' + Address + '"' + " WHERE UserId = " + UserId; 
-
-            var updateCmd = _connection.CreateCommand(updateAddress); 
-            updateCmd.ExecuteNonQuery();
+            return deleteCount;
         }
     }
 }

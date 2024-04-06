@@ -11,33 +11,33 @@
     <ContentPage.Content>
         <StackLayout Margin="25">
             <Label Text="Enter wallet address" />
-            <Entry x:Name="WalletAddress" Placeholder="Wallet Address" />
+            <Entry x:Name="WalletAddress" Placeholder="Wallet Address" Text="{Binding User.WalletAddress}" />
 
-            <Label Text="Enter username" Margin="20 0 0 0" />
-            <Entry x:Name="Username" Placeholder="Username" />
+            <Label Text="Enter username" />
+            <Entry x:Name="Username" Placeholder="Username" Text="{Binding User.UserName}" />
 
-            <Label Text="Preferred Name" Margin="20 0 0 0" />
-            <Entry x:Name="PreferredName" Placeholder="Preferred Name" />
+            <Label Text="Preferred Name" />
+            <Entry x:Name="PreferredName" Placeholder="Preferred Name" Text="{Binding User.PreferedName}" />
 
-            <Label Text="Color Theme" Margin="20 0 0 0" />
+            <Label Text="Color Theme" />
                 <Picker x:Name="PrimaryColorPicker" Title="Primary Color"
                         ItemsSource="{Binding AvailableColors}"
-                        SelectedItem="{Binding SelectedPrimaryColor}" />
+                        SelectedItem="{Binding User.PrimaryColor}" />
                 <Picker x:Name="SecondaryColorPicker" Title="Secondary Color"
                         ItemsSource="{Binding AvailableColors}"
-                        SelectedItem="{Binding SelectedSecondaryColor}" />
+                        SelectedItem="{Binding User.SecondaryColor}" />
 
-            <Label Text="Font Size" Margin="20 0 0 0" />
+            <Label Text="Font Size" />
             <Picker x:Name="FontSizePicker" Title="Font Size"
                         ItemsSource="{Binding AvailableFontSizes}"
-                        SelectedItem="{Binding SelectedFontSize}" />
+                        SelectedItem="{Binding User.FontSize}" />
 
-            <Label Text="Currency" Margin="20 0 0 0" />
+            <Label Text="Currency" />
             <Picker x:Name="CurrencyPicker" Title="Currency"
                         ItemsSource="{Binding AvailableCurrency}"
-                        SelectedItem="{Binding SelectedCurrency}" />
+                        SelectedItem="{Binding User.Currency}" />
 
-            <Button Text="Save" BackgroundColor="DarkGray" Margin="20 0 0 0" />
+            <Button Text="Save" BackgroundColor="DarkGray" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
