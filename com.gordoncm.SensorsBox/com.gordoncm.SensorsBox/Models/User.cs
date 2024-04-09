@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using SQLite;
 
 namespace com.gordoncm.SensorsBox.Models
 {
     [Table("Users")]
     public class User
     {
+        [PrimaryKey]
         public int UserId { get; set; }
 
         public string UserName { get; set; }

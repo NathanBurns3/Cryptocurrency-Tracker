@@ -37,7 +37,7 @@
                         ItemsSource="{Binding AvailableCurrency}"
                         SelectedItem="{Binding User.Currency}" />
 
-            <Button Text="Save" BackgroundColor="DarkGray" />
+            <Button Text="Save" BackgroundColor="DarkGray" Clicked="SaveUser" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

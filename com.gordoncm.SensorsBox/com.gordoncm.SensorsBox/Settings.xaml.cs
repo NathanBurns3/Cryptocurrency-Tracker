@@ -1,4 +1,5 @@
-﻿using com.gordoncm.SensorsBox.Database;
+﻿using System;
+using com.gordoncm.SensorsBox.Database;
 using com.gordoncm.SensorsBox.Models;
 using com.gordoncm.SensorsBox.ViewModels;
 using Xamarin.Forms;
@@ -24,6 +25,13 @@ namespace com.gordoncm.SensorsBox
             CryptoDB database = await CryptoDB.Instance;
             User user = await database.GetUserAsync();
             vm.User = user;
+        }
+
+        async void SaveUser(object sender, EventArgs e)
+        {
+            CryptoDB database = await CryptoDB.Instance;
+            await database.UpdateUserAsync(vm.User);
+            await Navigation.PopAsync();
         }
     }
 }

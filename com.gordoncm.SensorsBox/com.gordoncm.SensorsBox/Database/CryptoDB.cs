@@ -56,6 +56,11 @@ namespace com.gordoncm.SensorsBox.Database
             return Database.Table<User>().FirstOrDefaultAsync();
         }
 
+        public Task<int> UpdateUserAsync(User user)
+        {
+            return Database.UpdateAsync(user);
+        }
+
         public Task<List<Favorite>> GetFavorites()
         {
             return Database.Table<Favorite>().ToListAsync();

@@ -5,6 +5,7 @@ using com.gordoncm.SensorsBox.Models;
 using Xamarin.Forms;
 using com.gordoncm.SensorsBox.Database;
 using System.Windows.Input;
+using System;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
