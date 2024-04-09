@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using SQLite;
 
 namespace com.gordoncm.SensorsBox.Models
 {
     [Table("Coins")]
     public class Coin
     {
+        [PrimaryKey][AutoIncrement]
         public int CoinId {  get; set; }
 
         public string Name { get; set; }
