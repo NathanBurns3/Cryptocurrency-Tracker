@@ -61,6 +61,30 @@ namespace com.gordoncm.SensorsBox.Database
             return Database.UpdateAsync(user);
         }
 
+        public async Task<string> GetUserPrimaryColorAsync()
+        {
+            var user = await Database.Table<User>().FirstOrDefaultAsync();
+            return user?.PrimaryColor;
+        }
+
+        public async Task<string> GetUserSecondaryColorAsync()
+        {
+            var user = await Database.Table<User>().FirstOrDefaultAsync();
+            return user?.SecondaryColor;
+        }
+
+        public async Task<string> GetUserFontSizeAsync()
+        {
+            var user = await Database.Table<User>().FirstOrDefaultAsync();
+            return user?.FontSize;
+        }
+
+        public async Task<string> GetUserCurrencyAsync()
+        {
+            var user = await Database.Table<User>().FirstOrDefaultAsync();
+            return user?.Currency;
+        }
+
         public Task<List<Favorite>> GetFavorites()
         {
             return Database.Table<Favorite>().ToListAsync();
