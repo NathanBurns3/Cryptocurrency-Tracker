@@ -4,16 +4,22 @@
              x:Class="com.gordoncm.SensorsBox.CoinList"
              Title="Coins"
               xmlns:viewmodels1="clr-namespace:com.gordoncm.SensorsBox.ViewModels" 
-              xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox" 
+              xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox"
+              xmlns:models="clr-namespace:com.gordoncm.SensorsBox.Models"
               x:DataType="sensorsbox:AppShell">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Refresh" />
         <ToolbarItem Text="Search"  />
     </ContentPage.ToolbarItems>
-    <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}">
+    <ListView ItemsSource="{Binding Items}">
         <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="aawefawefawef" />
+            <DataTemplate x:DataType="models:Coin">
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Name}" FontAttributes="Bold" />
+                        <Label Text="{Binding Price}" HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
         <ListView.Footer>

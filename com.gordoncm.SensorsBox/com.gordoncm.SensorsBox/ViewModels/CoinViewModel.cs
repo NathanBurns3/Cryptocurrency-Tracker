@@ -1,19 +1,34 @@
 ﻿using com.gordoncm.SensorsBox.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
+using Xamarin.Forms.Xaml;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
-    public class CoinViewModel : BaseViewModel
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public class CoinViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Coin> Items { get; set; }
-        public CoinViewModel() 
+        private List<Coin> _items;
+        public List<Coin> Items
         {
-            Items = new ObservableCollection<Coin>(); 
-        } 
+            get { return _items; }
+            set
+            {
+                _items = value;
+                OnPropertyChanged(nameof(Items));
+            }
+        }
+        public CoinViewModel()
+        {
+            Items = new List<Coin>();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
