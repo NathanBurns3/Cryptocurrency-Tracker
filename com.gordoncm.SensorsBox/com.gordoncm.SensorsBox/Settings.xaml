@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="com.gordoncm.SensorsBox.Settings"
              Title="Settings"
+             Style="{StaticResource DynamicPageStyle}"
              xmlns:viewModels="clr-namespace:com.gordoncm.SensorsBox.ViewModels">
 
     <ContentPage.BindingContext>
@@ -10,34 +11,34 @@
 
     <ContentPage.Content>
         <StackLayout Margin="25">
-            <Label Text="Enter wallet address" />
-            <Entry x:Name="WalletAddress" Placeholder="Wallet Address" Text="{Binding User.WalletAddress}" />
+            <Label x:Name="WalletAddressLabel" Text="Enter wallet address" Style="{StaticResource DynamicLabelStyle}" />
+            <Entry x:Name="WalletAddressEntry" Placeholder="Wallet Address" Text="{Binding User.WalletAddress}" Style="{StaticResource DynamicEntryStyle}" />
 
-            <Label Text="Enter username" />
-            <Entry x:Name="Username" Placeholder="Username" Text="{Binding User.UserName}" />
+            <Label x:Name="UsernameLabel" Text="Enter username" Style="{StaticResource DynamicLabelStyle}" />
+            <Entry x:Name="UsernameEntry" Placeholder="Username" Text="{Binding User.UserName}" Style="{StaticResource DynamicEntryStyle}" />
 
-            <Label Text="Preferred Name" />
-            <Entry x:Name="PreferredName" Placeholder="Preferred Name" Text="{Binding User.PreferedName}" />
+            <Label x:Name="PreferredNameLabel" Text="Preferred Name" Style="{StaticResource DynamicLabelStyle}" />
+            <Entry x:Name="PreferredNameEntry" Placeholder="Preferred Name" Text="{Binding User.PreferedName}" Style="{StaticResource DynamicEntryStyle}" />
 
-            <Label Text="Color Theme" />
-                <Picker x:Name="PrimaryColorPicker" Title="Primary Color"
+            <Label x:Name="ColorPickerLabel" Text="Color Theme" Style="{StaticResource DynamicLabelStyle}" />
+                <Picker x:Name="PrimaryColorPicker" Title="Primary Color" Style="{StaticResource DynamicPickerStyle}"
                         ItemsSource="{Binding AvailableColors}"
                         SelectedItem="{Binding User.PrimaryColor}" />
-                <Picker x:Name="SecondaryColorPicker" Title="Secondary Color"
+                <Picker x:Name="SecondaryColorPicker" Title="Secondary Color" Style="{StaticResource DynamicPickerStyle}"
                         ItemsSource="{Binding AvailableColors}"
                         SelectedItem="{Binding User.SecondaryColor}" />
 
-            <Label Text="Font Size" />
-            <Picker x:Name="FontSizePicker" Title="Font Size"
+            <Label x:Name="FontSizeLabel" Text="Font Size" Style="{StaticResource DynamicLabelStyle}" />
+            <Picker x:Name="FontSizePicker" Title="Font Size" Style="{StaticResource DynamicPickerStyle}"
                         ItemsSource="{Binding AvailableFontSizes}"
                         SelectedItem="{Binding User.FontSize}" />
 
-            <Label Text="Currency" />
-            <Picker x:Name="CurrencyPicker" Title="Currency"
+            <Label x:Name="CurrencyLabel" Text="Currency" Style="{StaticResource DynamicLabelStyle}" />
+            <Picker x:Name="CurrencyPicker" Title="Currency" Style="{StaticResource DynamicPickerStyle}"
                         ItemsSource="{Binding AvailableCurrency}"
                         SelectedItem="{Binding User.Currency}" />
 
-            <Button Text="Save" BackgroundColor="DarkGray" Clicked="SaveUser" />
+            <Button x:Name="SaveButton" Text="Save" Style="{StaticResource DynamicButtonStyle}" Clicked="SaveUser" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
