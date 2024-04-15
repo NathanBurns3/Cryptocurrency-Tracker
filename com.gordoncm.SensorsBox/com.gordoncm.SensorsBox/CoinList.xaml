@@ -2,22 +2,26 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="com.gordoncm.SensorsBox.CoinList"
+                          xmlns:model="clr-namespace:com.gordoncm.SensorsBox.Models"
              Title="Coins"
               xmlns:viewmodels1="clr-namespace:com.gordoncm.SensorsBox.ViewModels" 
               xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox" 
               x:DataType="sensorsbox:AppShell">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Refresh" />
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Text="Refresh" Command="{Binding RefreshCmd}" x:DataType="viewmodels1:CoinViewModel" />
         <ToolbarItem Text="Search"  />
     </ContentPage.ToolbarItems>
-    <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="aawefawefawef" />
-            </DataTemplate>
-        </ListView.ItemTemplate>
-        <ListView.Footer>
-            <Button Text="Load More" BackgroundColor="DarkGray"/>
-        </ListView.Footer>
-    </ListView>
+    <StackLayout>
+        <Label Text="Press refresh to update or get the coins" Padding="10"/>
+        <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Coin">
+                    <TextCell Text="{Binding Name}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Button Text="Load More" BackgroundColor="DarkGray" Command="{Binding LoadMoreCmd}" />
+            </ListView.Footer>
+        </ListView>
+    </StackLayout>
 </ContentPage>

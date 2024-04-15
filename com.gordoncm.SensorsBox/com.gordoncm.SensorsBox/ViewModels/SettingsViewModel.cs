@@ -5,12 +5,11 @@ using com.gordoncm.SensorsBox.Models;
 using Xamarin.Forms;
 using com.gordoncm.SensorsBox.Database;
 using System.Windows.Input;
-using System;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
-    {
+    public class SettingsViewModel : BaseViewModel
+    { 
         private User _user;
         public User User
         {
@@ -84,13 +83,6 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 "CAD",
                 "Pesos",
             };
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

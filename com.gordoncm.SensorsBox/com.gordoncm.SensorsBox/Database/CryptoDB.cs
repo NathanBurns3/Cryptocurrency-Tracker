@@ -19,17 +19,67 @@ namespace com.gordoncm.SensorsBox.Database
             CreateTableResult coinResult = await Database.CreateTableAsync<Coin>();
             CreateTableResult userResult = await Database.CreateTableAsync<User>();
             CreateTableResult favoriteResult = await Database.CreateTableAsync<Favorite>();
+            CreateTableResult portfolioResult = await Database.CreateTableAsync<Models.Portfolio>(); 
 
             return instance;
         });
 
         public CryptoDB()
         {
-            Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
-            CreateDefaultUserIfNoneExists().Wait();
+            Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags); CreateDefaultUserIfNoneExists();
         }
 
-        private async Task CreateDefaultUserIfNoneExists()
+        public async Task AddCoin(string coinName, string cmcRank, string circulatingSupply, 
+            string totalSupply, string maxSupply, string Price)
+        {
+            var _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
+            _connection.CreateTableAsync<Models.Coin>();
+
+            var coin = new Coin()
+            {
+                Name = coinName, 
+                CMCRank = cmcRank,
+                CirculatingSupply = circulatingSupply,
+                TotalSupply = totalSupply,
+                MaxSupply = maxSupply,
+                Price = Price
+            };
+
+            await _connection.InsertAsync(coin);
+        }
+
+        public async Task<List<Models.Coin>> GetCoins()
+        {
+            var _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
+            _connection.CreateTableAsync<Models.Coin>();
+
+            var result = _connection.Table<Models.Coin>().ToListAsync().Result;
+            var coins = result.OrderBy(p => p.CMCRank).ToList();
+
+            return coins;
+        }
+
+        public async Task AddToPortfolio(string coinName, double coinAmount)
+        {
+            var _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
+            _connection.CreateTableAsync<Models.Portfolio>();
+
+            var portfolio = new Models.Portfolio
+            {
+                CoinName = coinName,
+                CoinAmount = coinAmount,   
+            };
+
+            await _connection.InsertAsync(portfolio);
+
+         //   var result = connection.Table<Models.Portfolio>().ToListAsync().Result; 
+
+
+            //await Database.InsertAsync(portfolio); 
+        }
+        
+
+        public async Task CreateDefaultUserIfNoneExists()
         {
             var userCount = await Database.Table<User>().CountAsync();
 
@@ -40,7 +90,8 @@ namespace com.gordoncm.SensorsBox.Database
                     UserId = 1,
                     UserName = "DefaultUser",
                     PreferedName = "Default User",
-                    WalletAddress = "0x",
+                    ETHWalletAddress = "0x",
+                    BSCWalletAddress = "0x",
                     PrimaryColor = "Blue",
                     SecondaryColor = "Orange",
                     FontSize = "Medium",
@@ -56,33 +107,9 @@ namespace com.gordoncm.SensorsBox.Database
             return Database.Table<User>().FirstOrDefaultAsync();
         }
 
-        public Task<int> UpdateUserAsync(User user)
+        public Task<List<Models.Portfolio>> GetPortfolios()
         {
-            return Database.UpdateAsync(user);
-        }
-
-        public async Task<string> GetUserPrimaryColorAsync()
-        {
-            var user = await Database.Table<User>().FirstOrDefaultAsync();
-            return user?.PrimaryColor;
-        }
-
-        public async Task<string> GetUserSecondaryColorAsync()
-        {
-            var user = await Database.Table<User>().FirstOrDefaultAsync();
-            return user?.SecondaryColor;
-        }
-
-        public async Task<string> GetUserFontSizeAsync()
-        {
-            var user = await Database.Table<User>().FirstOrDefaultAsync();
-            return user?.FontSize;
-        }
-
-        public async Task<string> GetUserCurrencyAsync()
-        {
-            var user = await Database.Table<User>().FirstOrDefaultAsync();
-            return user?.Currency;
+           return Database.Table<Models.Portfolio>().ToListAsync();
         }
 
         public Task<List<Favorite>> GetFavorites()
@@ -95,14 +122,26 @@ namespace com.gordoncm.SensorsBox.Database
             return Database.Table<Coin>().Where(i => i.CoinId == coinId).FirstOrDefaultAsync();
         }
 
-        public Task<List<Coin>> GetCoins(int maxId, int pageId)
+        public Task<List<Coin>> GetCoins(int skip)
         {
-            return Database.Table<Coin>().Where(i => i.CoinId <= maxId && i.CoinId >= pageId).ToListAsync();
+            return Database.Table<Coin>().Skip(skip).Take(50).ToListAsync();
         }
 
         public Task<int> DeleteFavorite(Favorite favorite)
         {
             return Database.DeleteAsync(favorite);
+        }
+
+        public async Task<int> DeletePortfolio()
+        {
+            var coins = await Database.Table<Models.Portfolio>().ToListAsync(); 
+
+            foreach (var coin in coins)
+            {
+                await Database.DeleteAsync(coin); 
+            }
+
+            return 0;
         }
 
         public async Task<int> DeleteCoins()

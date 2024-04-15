@@ -3,16 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="com.gordoncm.SensorsBox.Portfolio"
            xmlns:viewmodels1="clr-namespace:com.gordoncm.SensorsBox.ViewModels" 
+             xmlns:model="clr-namespace:com.gordoncm.SensorsBox.Models"
               xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox" 
+             xmlns:viewModels="clr-namespace:com.gordoncm.SensorsBox.ViewModels"
              Title="Portfolio">
-    <ListView x:DataType="viewmodels1:PortfolioViewModel">
-        <ListView.Header>
-            <Label Text="Cameron's Portfolio: $69000"/>
-        </ListView.Header>
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="fawefawef" />
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" 
+                 Priority="0" x:DataType="viewmodels1:PortfolioViewModel" Command="{Binding RefreshCmd}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.BindingContext>
+        <viewModels:PortfolioViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout>
+        <Frame Margin="10,10,10,10" BackgroundColor="DarkGray">
+            <StackLayout>
+                <Label FontSize="Large" Text="Cameron's Portfolio" TextColor="White"  />
+                <Label FontSize="Medium" Text="Showing Top 30 Coins" TextColor="White" />
+            </StackLayout>
+        </Frame>
+        <Label Text="{Binding LBLMsg}" Padding="10" IsVisible="{Binding LBLIsVisible}" />
+        <ListView x:DataType="viewmodels1:PortfolioViewModel" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding CoinName}" x:DataType="model:Portfolio" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
 </ContentPage>
