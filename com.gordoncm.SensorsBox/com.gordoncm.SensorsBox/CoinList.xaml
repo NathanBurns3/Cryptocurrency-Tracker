@@ -16,7 +16,12 @@
         <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Coin">
-                    <TextCell Text="{Binding Name}" />
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Name}" VerticalOptions="Center" />
+                            <Label Text="{Binding Price, StringFormat='${0:F2}'}" VerticalOptions="Center" HorizontalOptions="EndAndExpand" />
+                        </StackLayout>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
