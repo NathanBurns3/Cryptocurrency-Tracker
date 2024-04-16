@@ -23,6 +23,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private CryptoDB _db {  get; set; }
         private SQLiteAsyncConnection _connection {  get; set; }
         private bool _listViewIsVisible = false;
+        private string _lblRefresh; 
 
         public bool ListViewIsVisible
         {
@@ -34,40 +35,55 @@ namespace com.gordoncm.SensorsBox.ViewModels
             }
         }
 
+        public string LBLRefresh
+        {
+            get { return _lblRefresh; }
+            set
+            {
+                _lblRefresh = value;
+                OnPropertyChanged("LBLRefresh");
+            }
+        }
+
         public CoinViewModel() 
         {
             _db = new CryptoDB();
             Items = new ObservableCollection<Coin>();
+
+            LBLRefresh = "Press refresh to get new coin prices"; 
 
             _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
             _connection.CreateTableAsync<Models.Coin>();
 
             RefreshCmd = new Command(Refresh); 
             LoadMoreCmd = new Command(LoadMore);
+
+            try
+            {
+                UpdateToObs();
+            }
+            catch (Exception ex)
+            { 
+            }
         }
 
         private void Refresh()
         {
+            LBLRefresh = "Refreshing..."; 
+
             Items.Clear();
 
             _connection.DeleteAllAsync<Models.Coin>(); 
 
             try
             {
-                var result = _connection.Table<Models.Coin>().ToListAsync().Result;
+                CreateIfNew();
 
-                if (result.Count != 0)
-                {
-                    UpdateToObs();
-                }
-                else
-                {
-                    CreateIfNew();
-                }
             }
             catch (Exception ex)
             {
                 string error = ex.Message; 
+                LBLRefresh = error;
             }
 
         }
@@ -118,7 +134,9 @@ namespace com.gordoncm.SensorsBox.ViewModels
                     await _db.AddCoin(name, cmcRank, circulatingSupply, totalSupply, maxSupply, price);
                 };
 
-                UpdateToObs(); 
+                UpdateToObs();
+
+                LBLRefresh = "Done Refreshing"; 
             }
             catch (Exception ex)
             {

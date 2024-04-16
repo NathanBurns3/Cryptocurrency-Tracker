@@ -1,19 +1,9 @@
-﻿using com.gordoncm.SensorsBox.Database;
-using com.gordoncm.SensorsBox.Models;
-using Microsoft.Extensions.Hosting.Internal;
+﻿using com.gordoncm.SensorsBox.Database; 
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Transactions;
+using System.Collections.ObjectModel; 
+using System.Linq; 
 using System.Windows.Input;
 using System.Runtime;
 using SQLite;
@@ -29,20 +19,19 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
         private CryptoDB _db; 
         private SQLiteAsyncConnection _connection;
-        private bool _listViewIsVisible = false;
-        private bool _lblIsVisible = true;
-        private string _lblMsg = "Press refresh to update portfolio"; 
+        private bool _listViewIsVisible = false; 
+        private string _lblMsg = "Press refresh to update portfolio";
 
         public string LBLMsg
         {
-            get { return _lblMsg; } set { _lblMsg = value; }
+            get { return _lblMsg; }
+            set
+            {
+                _lblMsg = value;
+                OnPropertyChanged("LBLMsg");
+            }
         }
-
-        public bool LBLIsVisible
-        {
-            get { return _lblIsVisible; }
-            set { _lblIsVisible = value; }
-        }
+         
 
         public bool ListViewIsVisible
         {
@@ -63,30 +52,37 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
             _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
             _connection.CreateTableAsync<Models.Portfolio>();
+
+            LBLMsg = "Press refresh to update portfolio";
+
+            try
+            {
+                UpdateToObs(_connection.Table<Models.Portfolio>().ToListAsync().Result);
+            }
+            catch
+            {
+            }
         } 
 
         private void Refresh()
         {
             try
             {
+                LBLMsg = "Refreshing"; 
+
                 Items.Clear(); 
 
                 var result = _connection.Table<Models.Portfolio>().ToListAsync().Result;
 
-                if (result.Count() != 0)
-                {
-                    UpdateToObs(result);
-                }
-                else
-                {
-                    UpdatePortfolio("0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be");
-                }
+                UpdatePortfolio("0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be");
 
-                _lblIsVisible = false;
-                ListViewIsVisible = true; 
+
+                ListViewIsVisible = true;
             }
             catch (Exception ex)
-            { 
+            {
+                string error = ex.Message;
+                LBLMsg = error; 
             }
 
         }
@@ -99,13 +95,12 @@ namespace com.gordoncm.SensorsBox.ViewModels
             {
                 Items.Add(item);
             }
+
+            ListViewIsVisible = true; 
         }
 
         public async void UpdatePortfolio(string walletAddress)
         {
-            //
-            // 
-
             var apiCaller = new ApiCaller();
             string response = await apiCaller.GetETHPortfolio(walletAddress);
 
@@ -143,10 +138,12 @@ namespace com.gordoncm.SensorsBox.ViewModels
                     catch (Exception ex)
                     {
                         string message = ex.Message;
-                        _lblMsg = message; 
+                        LBLMsg = message; 
                     }
                 }
             }
+
+            LBLMsg = "Done refreshing"; 
         }
     }
 }
