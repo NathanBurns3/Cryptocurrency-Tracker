@@ -123,14 +123,22 @@ namespace com.gordoncm.SensorsBox.ViewModels
                         dynamic tokenNameConvert = JsonConvert.DeserializeObject<dynamic>(tokenNameResult);
                         dynamic resultResponse = tokenNameConvert.result;
 
-                        string balanceResult = await apiCaller.GetTokenBalance(tokenBalance);
+                        decimal h = 0;
 
-                        string finalBalanceResult = balanceResult.Replace("\"", "").Replace("\\","");
+                        try
+                        {
+                            string balanceResult = await apiCaller.GetTokenBalance(tokenBalance);
 
-                        decimal h = Decimal.Parse(
-                                finalBalanceResult,
-                                NumberStyles.Any,
-                                 CultureInfo.InvariantCulture);
+                            string finalBalanceResult = balanceResult.Replace("\"", "").Replace("\\", "");
+
+                            h = Decimal.Parse(
+                                    finalBalanceResult,
+                                    NumberStyles.Any,
+                                     CultureInfo.InvariantCulture);
+                        }
+                        catch
+                        {
+                        }
 
 
                         string tokenName = resultResponse[0].tokenName; 
