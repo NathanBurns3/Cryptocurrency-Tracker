@@ -13,8 +13,6 @@ namespace com.gordoncm.SensorsBox
         { 
             InitializeComponent();
             BindingContext = coinViewModel = new CoinViewModel(); 
-
-
         }
     }
 }

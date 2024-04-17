@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using com.gordoncm.SensorsBox.Database;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Globalization;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
@@ -62,7 +63,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
             {
                 UpdateToObs();
             }
-            catch (Exception ex)
+            catch
             { 
             }
         }
@@ -80,16 +81,31 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 CreateIfNew();
 
             }
-            catch (Exception ex)
-            {
-                string error = ex.Message; 
-                LBLRefresh = error;
+            catch 
+            { 
             }
 
         }
 
         private void LoadMore()
         {
+            if (Items.Count > 0)
+            {
+                var skipCount = Items.Count;
+
+                var coins = _db.GetCoins(skipCount).Result;
+
+                foreach (var coin in coins)
+                {
+                    decimal h = Decimal.Parse(
+                        coin.Price,
+                        NumberStyles.Any,
+                         CultureInfo.InvariantCulture);
+                    coin.SENotation = h; 
+
+                    Items.Add(coin);
+                }
+            }
         } 
 
         private void UpdateToObs()
@@ -97,6 +113,11 @@ namespace com.gordoncm.SensorsBox.ViewModels
             var coins = _db.GetCoins(0).Result;
             foreach (var coin in coins)
             {
+                decimal h = Decimal.Parse(
+    coin.Price,
+    NumberStyles.Any,
+     CultureInfo.InvariantCulture);
+                coin.SENotation = h;
                 Items.Add(coin); 
             }
 
@@ -138,9 +159,8 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
                 LBLRefresh = "Done Refreshing"; 
             }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
+            catch
+            { 
             }
         }
     }

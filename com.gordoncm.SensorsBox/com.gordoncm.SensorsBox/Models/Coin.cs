@@ -21,5 +21,7 @@ namespace com.gordoncm.SensorsBox.Models
         public string TotalSupply { get; set; }
 
         public string MaxSupply { get; set; }
+
+        public decimal? SENotation { get; set; }
     }
 }

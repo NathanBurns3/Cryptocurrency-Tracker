@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Runtime;
 using SQLite;
 using Xamarin.Forms;
+using System.Globalization;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
@@ -20,7 +21,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private CryptoDB _db; 
         private SQLiteAsyncConnection _connection;
         private bool _listViewIsVisible = false; 
-        private string _lblMsg = "Press refresh to update portfolio";
+        private string _lblMsg = "";
 
         public string LBLMsg
         {
@@ -70,19 +71,17 @@ namespace com.gordoncm.SensorsBox.ViewModels
             {
                 LBLMsg = "Refreshing"; 
 
-                Items.Clear(); 
+                Items.Clear();
 
-                var result = _connection.Table<Models.Portfolio>().ToListAsync().Result;
+                _connection.Table<Models.Portfolio>().DeleteAsync(); 
 
                 UpdatePortfolio("0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be");
 
 
                 ListViewIsVisible = true;
             }
-            catch (Exception ex)
+            catch
             {
-                string error = ex.Message;
-                LBLMsg = error; 
             }
 
         }
@@ -117,28 +116,37 @@ namespace com.gordoncm.SensorsBox.ViewModels
                     string contractAddress = token.contractAddress;
                     string tokenBalance = token.tokenBalance;
 
+                    // http://94.158.244.85:3000/?id=0x000000000000000000000000000000000000000000108b2a2c28029094000000
                     try
                     {
                         string tokenNameResult = await apiCaller.GetTokenFromTx(contractAddress);
                         dynamic tokenNameConvert = JsonConvert.DeserializeObject<dynamic>(tokenNameResult);
                         dynamic resultResponse = tokenNameConvert.result;
 
+                        string balanceResult = await apiCaller.GetTokenBalance(tokenBalance);
+
+                        string finalBalanceResult = balanceResult.Replace("\"", "").Replace("\\","");
+
+                        decimal h = Decimal.Parse(
+                                finalBalanceResult,
+                                NumberStyles.Any,
+                                 CultureInfo.InvariantCulture);
+
+
                         string tokenName = resultResponse[0].tokenName; 
 
-                        await _db.AddToPortfolio(tokenName, 10);
+                        await _db.AddToPortfolio(tokenName, h);
 
                         var portfolio = new Models.Portfolio();
                         portfolio.CoinName = tokenName;
-                        portfolio.CoinAmount = 10000;
+                        portfolio.CoinAmount = h;
 
                         Items.Add(portfolio);
 
                         tokenCounter++;  
                     }
-                    catch (Exception ex)
-                    {
-                        string message = ex.Message;
-                        LBLMsg = message; 
+                    catch
+                    { 
                     }
                 }
             }

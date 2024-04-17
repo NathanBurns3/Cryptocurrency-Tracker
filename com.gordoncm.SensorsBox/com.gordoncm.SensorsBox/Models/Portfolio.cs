@@ -15,6 +15,6 @@ namespace com.gordoncm.SensorsBox.Models
 
         public string CoinName { get; set; }
 
-        public double CoinAmount { get; set; } 
+        public decimal CoinAmount { get; set; } 
     }
 }

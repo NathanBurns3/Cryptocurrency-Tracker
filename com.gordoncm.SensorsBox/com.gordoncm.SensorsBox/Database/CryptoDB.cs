@@ -59,7 +59,7 @@ namespace com.gordoncm.SensorsBox.Database
             return coins;
         }
 
-        public async Task AddToPortfolio(string coinName, double coinAmount)
+        public async Task AddToPortfolio(string coinName, decimal coinAmount)
         {
             var _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
             _connection.CreateTableAsync<Models.Portfolio>();
@@ -71,11 +71,6 @@ namespace com.gordoncm.SensorsBox.Database
             };
 
             await _connection.InsertAsync(portfolio);
-
-         //   var result = connection.Table<Models.Portfolio>().ToListAsync().Result; 
-
-
-            //await Database.InsertAsync(portfolio); 
         }
         
 

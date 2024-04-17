@@ -12,11 +12,20 @@
         <ToolbarItem Text="Search"  />
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <Label Text="Press refresh to update or get the coins" Padding="10"/>
-        <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}">
-            <ListView.ItemTemplate>
+        <Label Text="{Binding LBLRefresh}" Padding="10" x:DataType="viewmodels1:CoinViewModel"/>
+        <Label Text="Click on coin to view detailed metrics"  Padding="10"/>
+
+        <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}" Margin="10">
+            <ListView.ItemTemplate >
                 <DataTemplate x:DataType="model:Coin">
-                    <TextCell Text="{Binding Name}" />
+                    <ViewCell >
+                        <StackLayout>
+                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label HorizontalOptions="Start"  Text="{Binding SENotation}" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
