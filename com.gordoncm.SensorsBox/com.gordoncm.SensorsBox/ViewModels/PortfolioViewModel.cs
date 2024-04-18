@@ -9,6 +9,7 @@ using System.Runtime;
 using SQLite;
 using Xamarin.Forms;
 using System.Globalization;
+using com.gordoncm.SensorsBox.Models;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
@@ -22,6 +23,17 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private SQLiteAsyncConnection _connection;
         private bool _listViewIsVisible = false; 
         private string _lblMsg = "";
+        private string _portfolioMsg = ""; 
+
+        public string PortfolioMsg
+        {
+            get { return _portfolioMsg; } 
+            set
+            {
+                _portfolioMsg = value;
+                OnPropertyChanged("PortfolioMsg");
+            }
+        }
 
         public string LBLMsg
         {
@@ -32,7 +44,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 OnPropertyChanged("LBLMsg");
             }
         }
-         
+
 
         public bool ListViewIsVisible
         {
@@ -54,7 +66,10 @@ namespace com.gordoncm.SensorsBox.ViewModels
             _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
             _connection.CreateTableAsync<Models.Portfolio>();
 
+            var user = _db.GetUserAsync().Result; 
+
             LBLMsg = "Press refresh to update portfolio";
+            PortfolioMsg = user.PreferedName + "'s Portfolio"; 
 
             try
             {
@@ -75,13 +90,14 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
                 _connection.Table<Models.Portfolio>().DeleteAsync(); 
 
-                UpdatePortfolio("0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be");
+                UpdatePortfolio(_db.GetUserAsync().Result.ETHWalletAddress);
 
 
                 ListViewIsVisible = true;
             }
             catch
             {
+                LBLMsg = "Error occured while refreshing"; 
             }
 
         }
@@ -100,63 +116,72 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
         public async void UpdatePortfolio(string walletAddress)
         {
-            var apiCaller = new ApiCaller();
-            string response = await apiCaller.GetETHPortfolio(walletAddress);
-
-            dynamic results = JsonConvert.DeserializeObject<dynamic>(response);
-            dynamic result = results.result;
-            dynamic tokenBalances = result.tokenBalances;
-
-            var tokenCounter = 0;
-
-            foreach (var token in tokenBalances)
+            try
             {
-                if (tokenCounter <= 30)
+                var apiCaller = new ApiCaller();
+                string response = await apiCaller.GetETHPortfolio(walletAddress);
+
+                dynamic results = JsonConvert.DeserializeObject<dynamic>(response);
+                dynamic result = results.result;
+                dynamic tokenBalances = result.tokenBalances;
+
+                var tokenCounter = 0;
+
+                foreach (var token in tokenBalances)
                 {
-                    string contractAddress = token.contractAddress;
-                    string tokenBalance = token.tokenBalance;
-
-                    // http://94.158.244.85:3000/?id=0x000000000000000000000000000000000000000000108b2a2c28029094000000
-                    try
+                    if (tokenCounter <= 30)
                     {
-                        string tokenNameResult = await apiCaller.GetTokenFromTx(contractAddress);
-                        dynamic tokenNameConvert = JsonConvert.DeserializeObject<dynamic>(tokenNameResult);
-                        dynamic resultResponse = tokenNameConvert.result;
+                        string contractAddress = token.contractAddress;
+                        string tokenBalance = token.tokenBalance;
 
-                        decimal h = 0;
-
+                        // http://94.158.244.85:3000/?id=0x000000000000000000000000000000000000000000108b2a2c28029094000000
                         try
                         {
-                            string balanceResult = await apiCaller.GetTokenBalance(tokenBalance);
+                            string tokenNameResult = await apiCaller.GetTokenFromTx(contractAddress);
+                            dynamic tokenNameConvert = JsonConvert.DeserializeObject<dynamic>(tokenNameResult);
+                            dynamic resultResponse = tokenNameConvert.result;
 
-                            string finalBalanceResult = balanceResult.Replace("\"", "").Replace("\\", "");
+                            decimal h = 0;
 
-                            h = Decimal.Parse(
-                                    finalBalanceResult,
-                                    NumberStyles.Any,
-                                     CultureInfo.InvariantCulture);
+                            try
+                            {
+                                string balanceResult = await apiCaller.GetTokenBalance(tokenBalance);
+
+                                string finalBalanceResult = balanceResult.Replace("\"", "").Replace("\\", "");
+
+                                h = Decimal.Parse(
+                                        finalBalanceResult,
+                                        NumberStyles.Any,
+                                         CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                                LBLMsg = "Error occured while refreshing"; 
+                            }
+
+
+                            string tokenName = resultResponse[0].tokenName;
+
+                            await _db.AddToPortfolio(tokenName, h);
+
+                            var portfolio = new Models.Portfolio();
+                            portfolio.CoinName = tokenName;
+                            portfolio.CoinAmount = h;
+
+                            Items.Add(portfolio);
+
+                            tokenCounter++;
                         }
                         catch
                         {
+                            LBLMsg = "Error occured while refreshing";
                         }
-
-
-                        string tokenName = resultResponse[0].tokenName; 
-
-                        await _db.AddToPortfolio(tokenName, h);
-
-                        var portfolio = new Models.Portfolio();
-                        portfolio.CoinName = tokenName;
-                        portfolio.CoinAmount = h;
-
-                        Items.Add(portfolio);
-
-                        tokenCounter++;  
-                    }
-                    catch
-                    { 
                     }
                 }
+            }
+            catch
+            {
+                LBLMsg = "Error refreshing"; 
             }
 
             LBLMsg = "Done refreshing"; 

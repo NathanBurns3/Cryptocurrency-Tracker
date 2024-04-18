@@ -15,6 +15,7 @@ namespace com.gordoncm.SensorsBox
             Routing.RegisterRoute(nameof(Portfolio), typeof(Portfolio));
             Routing.RegisterRoute(nameof(MyFavs), typeof(MyFavs));
             Routing.RegisterRoute(nameof(Settings), typeof(Settings));
+            Routing.RegisterRoute(nameof(CoinDetail), typeof(CoinDetail));
         }
     }
 }

@@ -64,7 +64,8 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 UpdateToObs();
             }
             catch
-            { 
+            {
+                LBLRefresh = "Error refreshing, try again"; 
             }
         }
 
@@ -82,7 +83,8 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
             }
             catch 
-            { 
+            {
+                LBLRefresh = "Error refreshing, try again"; 
             }
 
         }
@@ -160,7 +162,8 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 LBLRefresh = "Done Refreshing"; 
             }
             catch
-            { 
+            {
+                LBLRefresh = "Error refreshing, try again"; 
             }
         }
     }

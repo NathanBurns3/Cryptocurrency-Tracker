@@ -24,9 +24,14 @@ namespace com.gordoncm.SensorsBox.Database
             return instance;
         });
 
+        public void CreateUser()
+        {
+        }
+
         public CryptoDB()
         {
             Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags); CreateDefaultUserIfNoneExists();
+            CreateDefaultUserIfNoneExists(); 
         }
 
         public async Task AddCoin(string coinName, string cmcRank, string circulatingSupply, 
@@ -85,8 +90,7 @@ namespace com.gordoncm.SensorsBox.Database
                     UserId = 1,
                     UserName = "DefaultUser",
                     PreferedName = "Default User",
-                    ETHWalletAddress = "0x",
-                    BSCWalletAddress = "0x",
+                    ETHWalletAddress = "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be", 
                     PrimaryColor = "Blue",
                     SecondaryColor = "Orange",
                     FontSize = "Medium",

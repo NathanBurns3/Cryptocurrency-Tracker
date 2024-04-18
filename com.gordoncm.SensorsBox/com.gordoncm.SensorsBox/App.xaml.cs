@@ -4,7 +4,8 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using RestSharp; 
+using RestSharp;
+using SQLite;
 
 namespace com.gordoncm.SensorsBox
 {
@@ -16,6 +17,9 @@ namespace com.gordoncm.SensorsBox
             InitializeComponent();
 
             MainPage = new AppShell();
+
+            var connection = new SQLiteAsyncConnection(Constants.DatabasePath);
+            connection.CreateTableAsync<Models.User>(); 
         }
 
 

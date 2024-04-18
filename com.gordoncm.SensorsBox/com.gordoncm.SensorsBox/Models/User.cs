@@ -14,9 +14,7 @@ namespace com.gordoncm.SensorsBox.Models
 
         public string PreferedName { get; set; }
 
-        public string ETHWalletAddress { get; set; }
-
-        public string BSCWalletAddress { get; set; }
+        public string ETHWalletAddress { get; set; } 
 
         public string PrimaryColor { get; set; }
 

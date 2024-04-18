@@ -17,7 +17,7 @@
     <StackLayout>
         <Frame Margin="10,10,10,10" BackgroundColor="DarkGray">
             <StackLayout>
-                <Label FontSize="Large" Text="Cameron's Portfolio" TextColor="White"  />
+                <Label FontSize="Large" Text="{Binding PortfolioMsg}" TextColor="White"  />
                 <Label FontSize="Medium" Text="Showing First 30 Coins" TextColor="White" />
             </StackLayout>
         </Frame>

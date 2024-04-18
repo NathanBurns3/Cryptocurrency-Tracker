@@ -15,14 +15,14 @@
         <Label Text="{Binding LBLRefresh}" Padding="10" x:DataType="viewmodels1:CoinViewModel"/>
         <Label Text="Click on coin to view detailed metrics"  Padding="10"/>
 
-        <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}" Margin="10">
+        <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" ItemSelected="ListView_ItemSelected" IsVisible="{Binding ListViewIsVisible}" Margin="10">
             <ListView.ItemTemplate >
                 <DataTemplate x:DataType="model:Coin">
                     <ViewCell >
                         <StackLayout>
-                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Name}" FontAttributes="Bold"  />
                             <StackLayout Orientation="Horizontal" >
-                                <Label HorizontalOptions="Start"  Text="{Binding SENotation}" />
+                                <Label HorizontalOptions="Start"  Text="{Binding SENotation}"  />
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>

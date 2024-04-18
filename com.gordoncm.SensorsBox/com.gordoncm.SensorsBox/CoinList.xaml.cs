@@ -1,5 +1,8 @@
-﻿using com.gordoncm.SensorsBox.ViewModels; 
-
+﻿using com.gordoncm.SensorsBox.Database;
+using com.gordoncm.SensorsBox.Models;
+using com.gordoncm.SensorsBox.ViewModels;
+using SQLite;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,7 +15,13 @@ namespace com.gordoncm.SensorsBox
         public CoinList()
         { 
             InitializeComponent();
-            BindingContext = coinViewModel = new CoinViewModel(); 
+            BindingContext = coinViewModel = new CoinViewModel();
+        }
+
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            var item = (Coin) e.SelectedItem; 
+            await Navigation.PushAsync(new CoinDetail(item)); 
         }
     }
 }

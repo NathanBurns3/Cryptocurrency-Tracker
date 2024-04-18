@@ -69,7 +69,7 @@ namespace com.gordoncm.SensorsBox
 
         public async Task<string> GetETHPortfolio(string walletAddress)
         {
-            var url = "https://eth-mainnet.g.alchemy.com/v2/aUQWVOzm8LCfr0MDlN1cbNZUjZEhEw7z";
+            var url = "https://eth-mainnet.g.alchemy.com/v2/zHyOaZ4njRcWrjIiO-8yy-C-4swslzEG";
 
             var options = new RestClientOptions(url)
             {
