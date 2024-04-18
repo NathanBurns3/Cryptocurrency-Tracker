@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="com.gordoncm.SensorsBox.Search">
+             x:Class="com.gordoncm.SensorsBox.Search"
+             Title="Search for Coins">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <SearchBar x:Name="CountriesSearchBar"  
+             TextChanged="Handle_SearchButtonPressed"
+                       Placeholder="Search for a coin by name"/>
+            <ListView x:Name="CountrySearchList" Footer=""  ItemSelected="ListView_ItemSelected"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

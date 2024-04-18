@@ -126,6 +126,16 @@ namespace com.gordoncm.SensorsBox.Database
             return Database.Table<Coin>().Skip(skip).Take(50).ToListAsync();
         }
 
+        public Task<List<Coin>> GetAllCoins()
+        {
+            return Database.Table<Coin>().ToListAsync(); 
+        }
+
+        public Task<Coin> GetCoinByName(string name)
+        {
+            return Database.Table<Coin>().Where(c => c.Name == name).FirstOrDefaultAsync();
+        }
+
         public Task<int> DeleteFavorite(Favorite favorite)
         {
             return Database.DeleteAsync(favorite);

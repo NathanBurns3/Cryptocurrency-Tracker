@@ -16,10 +16,13 @@ namespace com.gordoncm.SensorsBox.ViewModels
 {
     public class CoinViewModel : BaseViewModel
     {
+        public INavigation Navigation { get; set; }
+
         public ObservableCollection<Coin> Items { get; set; }
 
         public ICommand LoadMoreCmd {  get; set; }
         public ICommand RefreshCmd {  get; set; }
+        public ICommand SearchCmd {  get; set; }
 
         private CryptoDB _db {  get; set; }
         private SQLiteAsyncConnection _connection {  get; set; }
@@ -46,8 +49,10 @@ namespace com.gordoncm.SensorsBox.ViewModels
             }
         }
 
-        public CoinViewModel() 
+        public CoinViewModel(INavigation navigation) 
         {
+            this.Navigation = navigation;
+
             _db = new CryptoDB();
             Items = new ObservableCollection<Coin>();
 
@@ -58,6 +63,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
             RefreshCmd = new Command(Refresh); 
             LoadMoreCmd = new Command(LoadMore);
+            SearchCmd = new Command(Search);
 
             try
             {
@@ -67,6 +73,11 @@ namespace com.gordoncm.SensorsBox.ViewModels
             {
                 LBLRefresh = "Error refreshing, try again"; 
             }
+        }
+
+        private async void Search()
+        {
+            await Navigation.PushAsync(new Search()); 
         }
 
         private void Refresh()

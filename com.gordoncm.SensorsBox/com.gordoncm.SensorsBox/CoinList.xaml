@@ -9,7 +9,7 @@
               x:DataType="sensorsbox:AppShell">
     <ContentPage.ToolbarItems >
         <ToolbarItem Text="Refresh" Command="{Binding RefreshCmd}" x:DataType="viewmodels1:CoinViewModel" />
-        <ToolbarItem Text="Search"  />
+        <ToolbarItem Text="Search"  Command="{Binding SearchCmd}" x:DataType="viewmodels1:CoinViewModel"/>
     </ContentPage.ToolbarItems>
     <StackLayout>
         <Label Text="{Binding LBLRefresh}" Padding="10" x:DataType="viewmodels1:CoinViewModel"/>

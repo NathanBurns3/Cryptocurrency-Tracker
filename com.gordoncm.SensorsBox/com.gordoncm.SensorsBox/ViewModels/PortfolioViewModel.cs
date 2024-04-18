@@ -18,7 +18,6 @@ namespace com.gordoncm.SensorsBox.ViewModels
         public ObservableCollection<Models.Portfolio> Items { get; set; }
         public ICommand RefreshCmd {  get; set; }
 
-
         private CryptoDB _db; 
         private SQLiteAsyncConnection _connection;
         private bool _listViewIsVisible = false; 
@@ -173,8 +172,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
                             tokenCounter++;
                         }
                         catch
-                        {
-                            LBLMsg = "Error occured while refreshing";
+                        { 
                         }
                     }
                 }

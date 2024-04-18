@@ -15,7 +15,7 @@ namespace com.gordoncm.SensorsBox
         public CoinList()
         { 
             InitializeComponent();
-            BindingContext = coinViewModel = new CoinViewModel();
+            BindingContext = coinViewModel = new CoinViewModel(Navigation);
         }
 
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
