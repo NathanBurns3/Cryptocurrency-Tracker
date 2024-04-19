@@ -22,6 +22,6 @@ namespace com.gordoncm.SensorsBox
 			InitializeComponent(); 
 			_coin = coin;
 			BindingContext = vm = new CoinDetailViewModel(_coin); 
-		}
+		} 
 	}
 }

@@ -6,7 +6,7 @@ using System.Text;
 namespace com.gordoncm.SensorsBox.Models
 {
     [Table("Favorites")]
-    public class Favorite
+    public class Favorite : BaseModel
     {
         public int Id { get; set; }
 

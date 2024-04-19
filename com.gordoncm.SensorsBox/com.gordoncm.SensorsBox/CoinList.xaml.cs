@@ -15,7 +15,7 @@ namespace com.gordoncm.SensorsBox
         public CoinList()
         { 
             InitializeComponent();
-            BindingContext = coinViewModel = new CoinViewModel(Navigation);
+            BindingContext = coinViewModel = new CoinViewModel(Navigation); 
         }
 
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -23,5 +23,10 @@ namespace com.gordoncm.SensorsBox
             var item = (Coin) e.SelectedItem; 
             await Navigation.PushAsync(new CoinDetail(item)); 
         }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing(); 
+        } 
     }
 }

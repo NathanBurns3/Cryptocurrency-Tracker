@@ -22,7 +22,9 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private SQLiteAsyncConnection _connection;
         private bool _listViewIsVisible = false; 
         private string _lblMsg = "";
-        private string _portfolioMsg = ""; 
+        private string _portfolioMsg = "";
+        private User user;
+        private int _rowHeight; 
 
         public string PortfolioMsg
         {
@@ -31,6 +33,16 @@ namespace com.gordoncm.SensorsBox.ViewModels
             {
                 _portfolioMsg = value;
                 OnPropertyChanged("PortfolioMsg");
+            }
+        }
+
+        public int RowHeight
+        {
+            get { return _rowHeight; }
+            set
+            {
+                _rowHeight = value;
+                OnPropertyChanged("RowHeight");
             }
         }
 
@@ -65,9 +77,22 @@ namespace com.gordoncm.SensorsBox.ViewModels
             _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
             _connection.CreateTableAsync<Models.Portfolio>();
 
-            var user = _db.GetUserAsync().Result; 
+            try
+            {
+                user = _db.GetUserAsync().Result;
+            }
+            catch (Exception)
+            {
+            }
 
-            LBLMsg = "Press refresh to update portfolio";
+            if (user == null)
+            {
+                user = Utils.createFakeUser(); 
+            }
+
+            RowHeight = Utils.GetRowHeight(user.FontSize);
+
+            LBLMsg = "Press refresh to update portfolio, and change font sizes and colors from settings";
             PortfolioMsg = user.PreferedName + "'s Portfolio"; 
 
             try
@@ -83,16 +108,27 @@ namespace com.gordoncm.SensorsBox.ViewModels
         {
             try
             {
-                LBLMsg = "Refreshing"; 
+                LBLMsg = "Refreshing";
+                PortfolioMsg = _db.GetUserAsync().Result.PreferedName + "'s Portfolio";
+
 
                 Items.Clear();
 
-                _connection.Table<Models.Portfolio>().DeleteAsync(); 
+                _connection.Table<Models.Portfolio>().DeleteAsync();
+
+                var user2 = _db.GetUserAsync().Result;
+
+                if (user2 != null)
+                {
+                    user = user2;
+                }
+
+                RowHeight = Utils.GetRowHeight(user.FontSize);
 
                 UpdatePortfolio(_db.GetUserAsync().Result.ETHWalletAddress);
 
-
                 ListViewIsVisible = true;
+
             }
             catch
             {
@@ -107,6 +143,10 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
             foreach (Models.Portfolio item in result)
             {
+                item.PrimaryColor = user.PrimaryColor;
+                item.SecondaryColor = user.SecondaryColor;
+                item.FontSize = Utils.GetFontSize(user.FontSize); 
+
                 Items.Add(item);
             }
 
@@ -166,6 +206,9 @@ namespace com.gordoncm.SensorsBox.ViewModels
                             var portfolio = new Models.Portfolio();
                             portfolio.CoinName = tokenName;
                             portfolio.CoinAmount = h;
+                            portfolio.PrimaryColor = user.PrimaryColor;
+                            portfolio.SecondaryColor = user.SecondaryColor;
+                            portfolio.FontSize = Utils.GetFontSize(user.FontSize); 
 
                             Items.Add(portfolio);
 

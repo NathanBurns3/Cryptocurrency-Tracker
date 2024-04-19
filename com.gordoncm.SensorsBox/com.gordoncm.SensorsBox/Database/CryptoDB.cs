@@ -47,7 +47,7 @@ namespace com.gordoncm.SensorsBox.Database
                 CirculatingSupply = circulatingSupply,
                 TotalSupply = totalSupply,
                 MaxSupply = maxSupply,
-                Price = Price
+                Price = Price,  
             };
 
             await _connection.InsertAsync(coin);
@@ -93,12 +93,17 @@ namespace com.gordoncm.SensorsBox.Database
                     ETHWalletAddress = "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be", 
                     PrimaryColor = "Blue",
                     SecondaryColor = "Orange",
-                    FontSize = "Medium",
+                    FontSize = "Small",
                     Currency = "USD",
                 };
 
                 await Database.InsertAsync(defaultUser);
             }
+        }
+
+        public Task<int> UpdateUserAsync(User user)
+        {
+            return Database.UpdateAsync(user);
         }
 
         public Task<User> GetUserAsync()

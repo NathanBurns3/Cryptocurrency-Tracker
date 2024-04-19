@@ -7,7 +7,7 @@ using System.Text;
 namespace com.gordoncm.SensorsBox.Models
 {
     [Table("portfolio")]
-    public class Portfolio
+    public class Portfolio : BaseModel
     {
         [PrimaryKey]
         [AutoIncrement]
@@ -16,5 +16,7 @@ namespace com.gordoncm.SensorsBox.Models
         public string CoinName { get; set; }
 
         public decimal CoinAmount { get; set; } 
+
+
     }
 }

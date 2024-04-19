@@ -17,19 +17,19 @@
     <StackLayout>
         <Frame Margin="10,10,10,10" BackgroundColor="DarkGray">
             <StackLayout>
-                <Label FontSize="Large" Text="{Binding PortfolioMsg}" TextColor="White"  />
+                <Label FontSize="Large" Text="{Binding PortfolioMsg}" TextColor="White"/>
                 <Label FontSize="Medium" Text="Showing First 30 Coins" TextColor="White" />
             </StackLayout>
         </Frame>
         <Label Text="{Binding LBLMsg}"   IsVisible="{Binding LBLIsVisible}" Padding="10"/>
-        <ListView x:DataType="viewmodels1:PortfolioViewModel" Margin="10" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}">
+        <ListView x:DataType="viewmodels1:PortfolioViewModel" Margin="10" ItemsSource="{Binding Items}" IsVisible="{Binding ListViewIsVisible}" RowHeight="{Binding RowHeight}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout x:DataType="model:Portfolio">
-                            <Label Text="{Binding CoinName}" FontAttributes="Bold"/>
+                            <Label Text="{Binding CoinName}" FontAttributes="Bold" TextColor="{Binding PrimaryColor}" FontSize="{Binding FontSize}"/>
                             <StackLayout Orientation="Horizontal" >
-                                <Label HorizontalOptions="Start"  Text="{Binding CoinAmount}" />
+                                <Label HorizontalOptions="Start"  Text="{Binding CoinAmount}" TextColor="{Binding SecondaryColor}" FontSize="{Binding FontSize}"/>
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>

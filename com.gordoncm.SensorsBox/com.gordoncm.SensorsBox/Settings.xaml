@@ -9,14 +9,17 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout Margin="25"> 
+        <StackLayout Margin="25">
+            <Label x:Name="WalletAddressLabel" Text="Enter Ethereum Wallet Address"   />
+            <Entry x:Name="WalletAddressEntry" Placeholder="Ethereum Wallet Address" Text="{Binding User.ETHWalletAddress}"  />
+
             <Label Text="Enter username" />
             <Entry x:Name="Username" Placeholder="Username" Text="{Binding User.UserName}" />
 
             <Label Text="Preferred Name" />
             <Entry x:Name="PreferredName" Placeholder="Preferred Name" Text="{Binding User.PreferedName}" />
 
-            <Label Text="Color Theme" />
+            <Label Text="Color Theme" x:Name="ColorPickerLabel"/>
                 <Picker x:Name="PrimaryColorPicker" Title="Primary Color"
                         ItemsSource="{Binding AvailableColors}"
                         SelectedItem="{Binding User.PrimaryColor}" />
@@ -34,7 +37,7 @@
                         ItemsSource="{Binding AvailableCurrency}"
                         SelectedItem="{Binding User.Currency}" />
 
-            <Button Text="Save" BackgroundColor="DarkGray" />
+            <Button Text="Save" BackgroundColor="DarkGray" Clicked="Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -25,10 +25,10 @@ namespace com.gordoncm.SensorsBox
             InitializeComponent();
 
              _db = new CryptoDB();
-            var coinsDb = _db.GetAllCoins().Result; 
+            var coinsDb = _db.GetAllCoins().Result;
 
             foreach (var coin in coinsDb)
-            {
+            { 
                 coins.Add(coin.Name);
             }
 

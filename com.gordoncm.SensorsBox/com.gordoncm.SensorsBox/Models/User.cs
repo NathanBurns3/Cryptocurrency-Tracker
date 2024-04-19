@@ -1,13 +1,17 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using TableAttribute = SQLite.TableAttribute;
 
 namespace com.gordoncm.SensorsBox.Models
 {
     [Table("User")]
     public class User
     {
+        [PrimaryKey]
+        [AutoIncrement]
         public int UserId { get; set; }
 
         public string UserName { get; set; }

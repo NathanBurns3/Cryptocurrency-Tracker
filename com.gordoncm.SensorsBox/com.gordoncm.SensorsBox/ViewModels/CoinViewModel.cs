@@ -1,16 +1,11 @@
 ﻿using com.gordoncm.SensorsBox.Models;
 using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
+using System; 
+using System.Collections.ObjectModel;  
 using Newtonsoft.Json;
 using com.gordoncm.SensorsBox.Database;
 using System.Windows.Input;
-using Xamarin.Forms;
-using System.Globalization;
+using Xamarin.Forms; 
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
@@ -27,7 +22,20 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private CryptoDB _db {  get; set; }
         private SQLiteAsyncConnection _connection {  get; set; }
         private bool _listViewIsVisible = false;
-        private string _lblRefresh; 
+        private string _lblRefresh;
+        private int _rowHeight;
+        private string _test;
+        private User user; 
+
+        public int RowHeight
+        {
+            get { return _rowHeight; }
+            set
+            {
+                _rowHeight = value;
+                OnPropertyChanged("RowHeight"); 
+            }
+        }
 
         public bool ListViewIsVisible
         {
@@ -53,10 +61,26 @@ namespace com.gordoncm.SensorsBox.ViewModels
         {
             this.Navigation = navigation;
 
-            _db = new CryptoDB();
             Items = new ObservableCollection<Coin>();
 
-            LBLRefresh = "Press refresh to get new coin prices"; 
+            _db = new CryptoDB();
+
+            try
+            {
+                user = _db.GetUserAsync().Result;
+            }
+            catch (SQLiteException)
+            {
+            }
+
+            if (user == null)
+            {
+                user = Utils.createFakeUser(); 
+            }
+
+            RowHeight = Utils.GetRowHeight(user.FontSize); 
+
+            LBLRefresh = "Press refresh to get new coin prices, and update fonts and colors from settings"; 
 
             _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
             _connection.CreateTableAsync<Models.Coin>();
@@ -86,6 +110,22 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
             Items.Clear();
 
+            try
+            {
+                var user2 = _db.GetUserAsync().Result;
+
+                if (user2 != null)
+                {
+                    user = user2;
+                }
+
+                RowHeight = Utils.GetRowHeight(user.FontSize); 
+            }
+            catch
+            {
+
+            }
+
             _connection.DeleteAllAsync<Models.Coin>(); 
 
             try
@@ -110,28 +150,34 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
                 foreach (var coin in coins)
                 {
-                    decimal h = Decimal.Parse(
-                        coin.Price,
-                        NumberStyles.Any,
-                         CultureInfo.InvariantCulture);
-                    coin.SENotation = h; 
+                    if (coin.Price != "")
+                    {
+                        coin.SENotation = Utils.convert(coin.Price);
+                        coin.PrimaryColor = user.PrimaryColor; 
+                        coin.SecondaryColor = user.SecondaryColor;
 
-                    Items.Add(coin);
+                        Items.Add(coin);
+                    }
                 }
             }
         } 
 
         private void UpdateToObs()
         {
+            var fontSize = Utils.GetFontSize(user.FontSize); 
+
             var coins = _db.GetCoins(0).Result;
+
             foreach (var coin in coins)
             {
-                decimal h = Decimal.Parse(
-    coin.Price,
-    NumberStyles.Any,
-     CultureInfo.InvariantCulture);
-                coin.SENotation = h;
-                Items.Add(coin); 
+                if (coin.Price != "")
+                { 
+                    coin.FontSize = fontSize;
+                    coin.PrimaryColor = user.PrimaryColor;
+                    coin.SecondaryColor = user.SecondaryColor;
+                    coin.SENotation = Utils.convert(coin.Price); 
+                    Items.Add(coin); 
+                }
             }
 
             ListViewIsVisible = true;
@@ -172,9 +218,9 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
                 LBLRefresh = "Done Refreshing"; 
             }
-            catch
+            catch (Exception ex) 
             {
-                LBLRefresh = "Error refreshing, try again"; 
+                LBLRefresh = ex.Message; 
             }
         }
     }

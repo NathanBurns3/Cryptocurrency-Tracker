@@ -19,7 +19,9 @@ namespace com.gordoncm.SensorsBox
             MainPage = new AppShell();
 
             var connection = new SQLiteAsyncConnection(Constants.DatabasePath);
-            connection.CreateTableAsync<Models.User>(); 
+            connection.CreateTableAsync<Models.User>();
+
+            var cryptoDb = new CryptoDB(); 
         }
 
 
@@ -29,8 +31,7 @@ namespace com.gordoncm.SensorsBox
         }
 
         protected override async void OnResume()
-        {
-
+        { 
         }
     }
 }

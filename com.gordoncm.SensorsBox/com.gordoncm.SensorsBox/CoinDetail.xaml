@@ -9,18 +9,18 @@
         <StackLayout x:DataType="viewmodels1:CoinDetailViewModel" Padding="10">
             <Frame Margin="10,10,10,10" BackgroundColor="DarkGray">
                 <StackLayout>
-                    <Label FontSize="Large" Text="{Binding Name}"  FontAttributes="Bold" TextColor="White"/>
-                    <Label FontSize="Large" Text="{Binding Price}" TextColor="White"/> 
+                    <Label FontSize="Large" Text="{Binding Name}"  FontAttributes="Bold" TextColor="{Binding PrimaryColor}"/>
+                    <Label FontSize="Large" Text="{Binding Price}" TextColor="{Binding SecondaryColor}"/> 
                 </StackLayout>
             </Frame>
-            <Label Text="Circulating Supply: " FontAttributes="Bold" FontSize="Large" Padding="10"/>
-            <Label Text="{Binding CirculatingSupply}" FontSize="Large"  Padding="10"/>
-            <Label Text="Total Supply: " FontAttributes="Bold" FontSize="Large" Padding="10" />
-            <Label Text="{Binding TotalSupply}" FontSize="Large" Padding="10" />
-            <Label Text="Max Supply: " FontSize="Large" Padding="10" FontAttributes="Bold" />
-            <Label Text="{Binding MaxSupply}" FontSize="Large" Padding="10" />
-            <Label Text="CMC Rank: " FontSize="Large" Padding="10" FontAttributes="Bold" />
-            <Label Text="{Binding CMCRank}" FontSize="Large" Padding="10" />
+            <Label Text="Circulating Supply: " FontAttributes="Bold" FontSize="Large" Padding="10" TextColor="{Binding PrimaryColor}"/>
+            <Label Text="{Binding CirculatingSupply}" FontSize="Large"  Padding="10" TextColor="{Binding SecondaryColor}"/>
+            <Label Text="Total Supply: " FontAttributes="Bold" FontSize="Large" Padding="10" TextColor="{Binding PrimaryColor}" />
+            <Label Text="{Binding TotalSupply}" FontSize="Large" Padding="10" TextColor="{Binding SecondaryColor}"/>
+            <Label Text="Max Supply: " FontSize="Large" Padding="10" FontAttributes="Bold" TextColor="{Binding PrimaryColor}"/>
+            <Label Text="{Binding MaxSupply}" FontSize="Large" Padding="10" TextColor="{Binding SecondaryColor}"/>
+            <Label Text="CMC Rank: " FontSize="Large" Padding="10" FontAttributes="Bold"  TextColor="{Binding PrimaryColor}"/>
+            <Label Text="{Binding CMCRank}" FontSize="Large" Padding="10" TextColor="{Binding SecondaryColor}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
