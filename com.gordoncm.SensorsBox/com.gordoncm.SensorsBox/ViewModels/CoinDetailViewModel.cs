@@ -71,6 +71,25 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 user = Utils.createFakeUser(); 
             }
 
+            if (user.Currency != "USD")
+            {
+                if (h > 0.01M)
+                {
+                    if (user.Currency == "Pesos")
+                    {
+                        double price = Utils.convertToPesos(coin.Price);
+
+                        Price = Utils.convert(price.ToString());
+                    }
+                    else if (user.Currency == "CAD")
+                    {
+                        double price = Utils.convertToCad(coin.Price);
+
+                        Price = Utils.convert(price.ToString());
+                    }
+                }
+            }
+
             PrimaryColor = user.PrimaryColor;
             SecondaryColor = user.SecondaryColor;
         }

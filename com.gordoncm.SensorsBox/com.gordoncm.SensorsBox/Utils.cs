@@ -18,14 +18,18 @@ namespace com.gordoncm.SensorsBox
             return h; 
         }
 
-        public static decimal convertToCad(decimal amount)
+        public static double convertToCad(string amount)
         {
-            return 0;
+            var cad = Convert.ToDouble(amount) * 1.38; 
+
+            return cad;
         }
 
-        public static decimal convertToPesos(decimal amount)
+        public static double convertToPesos(string Price)
         {
-            return 0;
+            var pesos = Convert.ToDouble(Price) * 17.10; 
+
+            return pesos;
         }
 
         public static int GetRowHeight(string FontSize)

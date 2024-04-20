@@ -152,7 +152,31 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 {
                     if (coin.Price != "")
                     {
-                        coin.SENotation = Utils.convert(coin.Price);
+                        if (Utils.convert(coin.Price) < 0.01M)
+                        {
+                            coin.SENotation = Utils.convert(coin.Price);
+                        }
+                        else
+                        {
+                            if (user.Currency != "USD")
+                            {
+                                if (user.Currency == "CAD")
+                                {
+                                    double price = Utils.convertToCad(coin.Price);
+                                    coin.SENotation = Utils.convert(price.ToString()); 
+                                }
+                                else if (user.Currency == "Pesos")
+                                {
+                                    double price = Utils.convertToPesos(coin.Price);
+                                    coin.SENotation = Utils.convert(price.ToString()); 
+                                }
+                            }
+                            else
+                            {
+                                coin.SENotation = Utils.convert(coin.Price);
+                            }
+                        }
+
                         coin.PrimaryColor = user.PrimaryColor; 
                         coin.SecondaryColor = user.SecondaryColor;
 
@@ -175,7 +199,32 @@ namespace com.gordoncm.SensorsBox.ViewModels
                     coin.FontSize = fontSize;
                     coin.PrimaryColor = user.PrimaryColor;
                     coin.SecondaryColor = user.SecondaryColor;
-                    coin.SENotation = Utils.convert(coin.Price); 
+
+                    if (Utils.convert(coin.Price) < 0.01M)
+                    {
+                        coin.SENotation = Utils.convert(coin.Price);
+                    }
+                    else
+                    {
+                        if (user.Currency != "USD")
+                        {
+                            if (user.Currency == "CAD")
+                            {
+                                double price = Utils.convertToCad(coin.Price);
+                                coin.SENotation = Utils.convert(price.ToString());
+                            }
+                            else if (user.Currency == "Pesos")
+                            {
+                                double price = Utils.convertToPesos(coin.Price);
+                                coin.SENotation = Utils.convert(price.ToString());
+                            }
+                        }
+                        else
+                        {
+                            coin.SENotation = Utils.convert(coin.Price);
+                        }
+                    }
+
                     Items.Add(coin); 
                 }
             }
