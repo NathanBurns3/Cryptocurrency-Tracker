@@ -1,13 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:com.gordoncm.SensorsBox.Models"
+             xmlns:viewmodels="clr-namespace:com.gordoncm.SensorsBox.ViewModels"
              x:Class="com.gordoncm.SensorsBox.MyFavs"
              Title="My Favorites">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Command="{Binding RefreshCmd}" x:DataType="viewmodels:MyFavsViewModel" />
+        <ToolbarItem Text="Clear" Command="{Binding ClearCmd}" x:DataType="viewmodels:MyFavsViewModel" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label />
+            <Label HorizontalTextAlignment="Center" x:DataType="viewmodels:MyFavsViewModel" Text="{Binding FavoritesMsg}"></Label>
+
+            <ListView RowHeight="{Binding RowHeight}" x:DataType="viewmodels:MyFavsViewModel" ItemsSource="{Binding MyFavs}" ItemSelected="ListView_ItemSelected" IsVisible="{Binding ListViewIsVisible}" Margin="10">
+                <ListView.ItemTemplate >
+                    <DataTemplate x:DataType="models:Coin">
+                        <ViewCell>
+                            <StackLayout >
+                                <Label Text="{Binding Name}" FontAttributes="Bold"  FontSize="{Binding FontSize}" TextColor="{Binding PrimaryColor}"/>
+                                <Label Text="{Binding Price}" FontSize="{Binding FontSize}" TextColor="{Binding SecondaryColor}"/>
+                            </StackLayout>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

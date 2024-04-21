@@ -1,7 +1,7 @@
-﻿using System;
-using com.gordoncm.SensorsBox.Database;
+﻿using com.gordoncm.SensorsBox.Database;
 using com.gordoncm.SensorsBox.Models;
 using com.gordoncm.SensorsBox.ViewModels;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,60 +14,34 @@ namespace com.gordoncm.SensorsBox
 
         public Settings()
         {
+
             InitializeComponent();
-            BindingContext = vm = new SettingsViewModel();
+            BindingContext = vm = new SettingsViewModel(); 
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            CryptoDB database = await CryptoDB.Instance;
-            User user = await database.GetUserAsync();
+            var cryptoDb = await CryptoDB.Instance;
+            var user = cryptoDb.GetUserAsync().Result;
+
             vm.User = user;
         }
 
-        async void SaveUser(object sender, EventArgs e)
+        private double GetFontSizeFromName(string fontSize)
         {
-            CryptoDB database = await CryptoDB.Instance;
-            await database.UpdateUserAsync(vm.User);
-            await Navigation.PopAsync();
-
-            string primaryColorName = await database.GetUserPrimaryColorAsync();
-            string secondaryColorName = await database.GetUserSecondaryColorAsync();
-            string fontSizeName = await database.GetUserFontSizeAsync();
-
-            Color primaryColor = GetColorFromName(primaryColorName);
-            Color secondaryColor = GetColorFromName(secondaryColorName);
-            double fontSize = GetFontSizeFromName(fontSizeName);
-
-            WalletAddressLabel.TextColor = primaryColor;
-            UsernameLabel.TextColor = primaryColor;
-            PreferredNameLabel.TextColor = primaryColor;
-            ColorPickerLabel.TextColor = primaryColor;
-            FontSizeLabel.TextColor = primaryColor;
-            CurrencyLabel.TextColor = primaryColor;
-
-            WalletAddressLabel.FontSize = fontSize;
-            UsernameLabel.FontSize = fontSize;
-            PreferredNameLabel.FontSize = fontSize;
-            ColorPickerLabel.FontSize = fontSize;
-            FontSizeLabel.FontSize = fontSize;
-            CurrencyLabel.FontSize = fontSize;
-
-            WalletAddressEntry.FontSize = fontSize;
-            UsernameEntry.FontSize = fontSize;
-            PreferredNameEntry.FontSize = fontSize;
-
-            PrimaryColorPicker.FontSize = fontSize;
-            SecondaryColorPicker.FontSize = fontSize;
-            FontSizePicker.FontSize = fontSize;
-            CurrencyPicker.FontSize = fontSize;
-
-            SaveButton.BackgroundColor = secondaryColor;
-            SaveButton.FontSize = fontSize;
-
-            OnAppearing();
+            switch (fontSize)
+            {
+                case "Small":
+                    return 12.0;
+                case "Medium":
+                    return 20.0;
+                case "Large":
+                    return 28.0;
+                default:
+                    return 16.0;
+            }
         }
 
         private Color GetColorFromName(string colorName)
@@ -99,18 +73,17 @@ namespace com.gordoncm.SensorsBox
             }
         }
 
-        private double GetFontSizeFromName(string fontSize)
+        private void Button_Clicked(object sender, System.EventArgs e)
         {
-            switch (fontSize)
+            var cryptoDb = new CryptoDB(); 
+
+            try
             {
-                case "Small":
-                    return 12.0;
-                case "Medium":
-                    return 20.0;
-                case "Large":
-                    return 28.0;
-                default:
-                    return 16.0;
+                cryptoDb.UpdateUserAsync(vm.User);
+            }
+            catch
+            {
+
             }
         }
     }

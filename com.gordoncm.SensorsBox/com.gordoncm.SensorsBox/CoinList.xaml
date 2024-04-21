@@ -2,22 +2,36 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="com.gordoncm.SensorsBox.CoinList"
+                          xmlns:model="clr-namespace:com.gordoncm.SensorsBox.Models"
              Title="Coins"
               xmlns:viewmodels1="clr-namespace:com.gordoncm.SensorsBox.ViewModels" 
               xmlns:sensorsbox="clr-namespace:com.gordoncm.SensorsBox" 
               x:DataType="sensorsbox:AppShell">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Refresh" />
-        <ToolbarItem Text="Search"  />
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Text="Refresh" Command="{Binding RefreshCmd}" x:DataType="viewmodels1:CoinViewModel" />
+        <ToolbarItem Text="Search"  Command="{Binding SearchCmd}" x:DataType="viewmodels1:CoinViewModel"/>
     </ContentPage.ToolbarItems>
-    <ListView x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="aawefawefawef" />
-            </DataTemplate>
-        </ListView.ItemTemplate>
-        <ListView.Footer>
-            <Button Text="Load More" BackgroundColor="DarkGray"/>
-        </ListView.Footer>
-    </ListView>
+    <StackLayout>
+        <Label Text="{Binding LBLRefresh}" Padding="10" x:DataType="viewmodels1:CoinViewModel"/>
+        <Label Text="Click on coin to view detailed metrics"  Padding="10"/>
+
+        <ListView RowHeight="{Binding RowHeight}" x:DataType="viewmodels1:CoinViewModel" ItemsSource="{Binding Items}" ItemSelected="ListView_ItemSelected" IsVisible="{Binding ListViewIsVisible}" Margin="10">
+            <ListView.ItemTemplate >
+                <DataTemplate x:DataType="model:Coin">
+                    <ViewCell>
+                        <StackLayout >
+                            <Label Text="{Binding Name}" FontAttributes="Bold"  FontSize="{Binding FontSize}" TextColor="{Binding PrimaryColor}"/>
+                            <StackLayout Orientation="Horizontal" >
+                                <Label HorizontalOptions="Start"  Text="{Binding SENotation}" FontSize="{Binding FontSize}" TextColor="{Binding SecondaryColor}"/>
+                            </StackLayout>
+                        </StackLayout>
+                        
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Button Text="Load More" BackgroundColor="DarkGray" Command="{Binding LoadMoreCmd}" />
+            </ListView.Footer>
+        </ListView>
+    </StackLayout>
 </ContentPage>
