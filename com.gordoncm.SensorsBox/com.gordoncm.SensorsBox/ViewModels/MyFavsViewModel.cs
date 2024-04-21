@@ -24,7 +24,6 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private string _favoritesMsg = "";
         private User user;
         private int _rowHeight;
-        public INavigation Navigation { get; set; }
         public ICommand RefreshCmd { get; set; }
         public ICommand ClearCmd { get; set; }
         public string FavoritesMsg
