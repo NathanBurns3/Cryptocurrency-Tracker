@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using com.gordoncm.SensorsBox.Models;
-using com.gordoncm.SensorsBox.Database; 
+using com.gordoncm.SensorsBox.Database;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace com.gordoncm.SensorsBox.ViewModels
 {
     public  class CoinDetailViewModel : BaseViewModel
     {
+        private CryptoDB _db;
         private decimal _price {  get; set; }
         private string _name {  get; set; }
         private string _cmcRank {  get; set; }
@@ -17,10 +20,13 @@ namespace com.gordoncm.SensorsBox.ViewModels
         private string _maxSupply { get; set; }
         private string _primaryColor { get; set; }
         private string _secondaryColor { get; set; }
-
+        private string _buttonText { get; set; }
+        public ICommand FavoriteButtonCmd { get; set; }
 
         public CoinDetailViewModel(Coin coin) 
         {
+            _db = new CryptoDB();
+            
             Name = coin.Name;
             CMCRank = coin.CMCRank;
             if (coin.CirculatingSupply == null || coin.CirculatingSupply == string.Empty)
@@ -88,6 +94,17 @@ namespace com.gordoncm.SensorsBox.ViewModels
                         Price = Utils.convert(price.ToString());
                     }
                 }
+            }
+
+            if (IsFavorite(Name))
+            {
+                ButtonText = "Remove from Favorites";
+                FavoriteButtonCmd = new Command(RemoveFromFavorites);
+            }
+            else
+            {
+                ButtonText = "Add to Favorites";
+                FavoriteButtonCmd = new Command(AddToFavorites);
             }
 
             PrimaryColor = user.PrimaryColor;
@@ -171,6 +188,42 @@ namespace com.gordoncm.SensorsBox.ViewModels
                 _maxSupply = value;
                 OnPropertyChanged("MaxSupply"); 
             }
+        }
+        public string ButtonText
+        {
+            get { return _buttonText; }
+            set
+            {
+                _buttonText = value;
+                OnPropertyChanged("ButtonText");
+            }
+        }
+
+
+        private async void AddToFavorites()
+        {
+            await _db.AddCoinToFavorites(Name);
+            NavigateBack();
+        }
+        private async void RemoveFromFavorites()
+        {
+            var fav = await _db.GetFavoriteByName(Name);
+            await _db.DeleteFavorite(fav);
+            NavigateBack();
+        }
+        private async void NavigateBack()
+        {
+            await Application.Current.MainPage.Navigation.PopAsync();
+        }
+        
+        private bool IsFavorite(string name)
+        {
+            var fav = _db.GetFavoriteByName(name).Result;
+            if (fav == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

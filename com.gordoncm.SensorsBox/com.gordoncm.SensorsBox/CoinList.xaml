@@ -25,6 +25,7 @@
                                 <Label HorizontalOptions="Start"  Text="{Binding SENotation}" FontSize="{Binding FontSize}" TextColor="{Binding SecondaryColor}"/>
                             </StackLayout>
                         </StackLayout>
+                        
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

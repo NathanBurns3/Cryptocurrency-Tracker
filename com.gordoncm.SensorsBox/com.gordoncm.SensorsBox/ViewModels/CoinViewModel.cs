@@ -232,7 +232,10 @@ namespace com.gordoncm.SensorsBox.ViewModels
             ListViewIsVisible = true;
         }
 
+        private async void AddToFavorites()
+        {
 
+        }
 
         private async void CreateIfNew()
         { 

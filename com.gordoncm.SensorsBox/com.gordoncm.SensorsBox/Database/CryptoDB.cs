@@ -77,6 +77,18 @@ namespace com.gordoncm.SensorsBox.Database
 
             await _connection.InsertAsync(portfolio);
         }
+
+        public async Task AddCoinToFavorites(string name)
+        {
+            var _connection = new SQLiteAsyncConnection(Constants.DatabasePath);
+            _connection.CreateTableAsync<Favorite>();
+
+            var favorite = new Favorite
+            {
+                Name = name
+            };
+            await _connection.InsertAsync(favorite);
+        }
         
 
         public async Task CreateDefaultUserIfNoneExists()
@@ -141,6 +153,11 @@ namespace com.gordoncm.SensorsBox.Database
             return Database.Table<Coin>().Where(c => c.Name == name).FirstOrDefaultAsync();
         }
 
+        public Task<Favorite> GetFavoriteByName(string name)
+        {
+            return Database.Table<Favorite>().Where(f => f.Name == name).FirstOrDefaultAsync();
+        }
+
         public Task<int> DeleteFavorite(Favorite favorite)
         {
             return Database.DeleteAsync(favorite);
@@ -168,5 +185,6 @@ namespace com.gordoncm.SensorsBox.Database
             }
             return deleteCount;
         }
+        
     }
 }

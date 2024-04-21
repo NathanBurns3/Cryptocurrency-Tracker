@@ -21,6 +21,7 @@
             <Label Text="{Binding MaxSupply}" FontSize="Large" Padding="10" TextColor="{Binding SecondaryColor}"/>
             <Label Text="CMC Rank: " FontSize="Large" Padding="10" FontAttributes="Bold"  TextColor="{Binding PrimaryColor}"/>
             <Label Text="{Binding CMCRank}" FontSize="Large" Padding="10" TextColor="{Binding SecondaryColor}"/>
+            <Button Text="{Binding ButtonText}" Command="{Binding FavoriteButtonCmd}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
