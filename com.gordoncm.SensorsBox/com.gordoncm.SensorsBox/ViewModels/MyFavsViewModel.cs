@@ -88,6 +88,23 @@ namespace com.gordoncm.SensorsBox.ViewModels
         {
             FavoritesMsg = "Loading favorites...";
             MyFavs.Clear();
+
+            try
+            {
+                var user2 = _db.GetUserAsync().Result;
+
+                if (user2 != null)
+                {
+                    user = user2;
+                }
+
+                RowHeight = Utils.GetRowHeight(user.FontSize);
+            }
+            catch
+            {
+
+            }
+            var fontSize = Utils.GetFontSize(user.FontSize);
             var favs = await _db.GetFavorites();
             foreach(var fav in favs)
             {
@@ -97,6 +114,7 @@ namespace com.gordoncm.SensorsBox.ViewModels
 
                     if (!MyFavs.Contains(coin))
                     {
+                        coin.FontSize = fontSize;
                         coin.PrimaryColor = user.PrimaryColor;
                         coin.SecondaryColor = user.SecondaryColor;
                         MyFavs.Add(coin);
